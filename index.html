@@ -1,0 +1,94 @@
+<!doctype html>
+<head>
+	<meta charset="UTF8">
+    <meta name="viewport" content="width=device-width">
+    <script src="../libraries/mobilealerts.js"></script>
+	<title>Crossbrowser compass</title>
+	<style>
+        html{
+            background:#a2a3a6;
+        }
+        
+        #compassDiv{
+            position:relative;
+        }
+        .compassDiv__compassFrame{
+            margin: 100px auto;
+            display: block;
+            width: 320px;
+            background-image: url(8bitcompassframe.svg);
+            background-size: 100% 100%;
+        }
+        .compassDiv__compassFrame__compassImg {
+            width: 100%;
+        }
+        #debugDiv {
+            position:absolute;
+            left:0;
+            top:0;
+            color:white;
+            background:black;
+        }
+	</style>
+</head>
+
+<body>
+    <div id="compassDiv">
+        <div class="compassDiv__compassFrame">
+            <img class="compassDiv__compassFrame__compassImg" src="./8bitcompass.svg">
+        </div>
+    </div>
+    <div id="debugDiv"></div>
+    
+    <script>
+        "use strict";
+
+        
+        function startFollowingNorth(followFunc){
+            //newer android
+            if(window.ondeviceorientationabsolute !== undefined){
+                //android with absolute events
+                window.ondeviceorientationabsolute = 
+                    function(event){
+                        return event.absolute ? 
+                            followFunc(event.alpha):
+                            false;};
+                return;
+            }
+            else{
+                window.ondeviceorientation = 
+                    function(event){
+            //ios safari
+                        if(!isNaN(parseInt(event.webkitCompassHeading)))
+                            followFunc(360-event.webkitCompassHeading);
+            //older android
+                        else if(event.absolute === undefined)
+                            followFunc(event.alpha);
+                    }
+            }      
+        }
+        
+        window.onorientationchange =
+            function(oriEvent){
+                // document.querySelector('#debugDiv').innerHTML =
+                //     screen.orientation ?
+                //         screen.orientation.angle:
+                //         window.orientation;
+        };
+        
+        startFollowingNorth(
+            function(alpha){
+                var angle = 
+                    screen.orientation ?
+                        screen.orientation.angle:
+                        window.orientation;        
+                var arrowElem =document.querySelector('.compassDiv__compassFrame__compassImg');
+                arrowElem.style.transform = "rotate("+(alpha-angle)+"deg)";
+                arrowElem.style.webkitTransform = "rotate("+(alpha-angle)+"deg)";});
+    
+  
+        
+        
+	</script>
+</body>
+</html>

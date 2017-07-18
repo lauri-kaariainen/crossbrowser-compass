@@ -1,0 +1,13 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+    <defs>
+        <filter id="shadow" x="0" y="0" width="120%" height="120%">
+            <feOffset result="offOut" in="SourceAlpha" dx="16" dy="16" />
+            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+    </defs>
+    <g>
+        <ellipse fill-opacity="0" filter="url(#shadow)" stroke="#000" ry="265" rx="265" id="svg_1" cy="300" cx="300" stroke-width="3" fill="transparent"/>
+    </g>
+</svg>
